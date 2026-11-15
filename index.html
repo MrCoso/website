@@ -146,6 +146,23 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .wrap.is-story{grid-template-areas:"switch switch" "story story" "contacts contacts"}
   .blocks{grid-template-columns:1fr 1fr;align-items:start;gap:40px}
 }
+:root{--gl:color-mix(in srgb,var(--ink) 9%,transparent);--gp:color-mix(in srgb,var(--ink) 40%,transparent);--glow:transparent}
+:root[data-palette="color"]{--glow:color-mix(in srgb,var(--yo) 16%,transparent)}
+#grid{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background-image:linear-gradient(var(--gl) 1px,transparent 1px),linear-gradient(90deg,var(--gl) 1px,transparent 1px);
+  background-size:var(--cell,56px) var(--cell,56px);
+  -webkit-mask-image:radial-gradient(ellipse 75% 70% at 50% 45%,#000 20%,rgba(0,0,0,.14) 100%);
+  mask-image:radial-gradient(ellipse 75% 70% at 50% 45%,#000 20%,rgba(0,0,0,.14) 100%)}
+#grid::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,var(--glow),transparent 62%)}
+#grid i{position:absolute;width:12px;height:12px;margin:-5.5px 0 0 -5.5px;color:var(--gp);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+#grid i::before,#grid i::after{content:"";position:absolute;background:currentColor}
+#grid i::before{left:0;right:0;top:50%;height:1px;margin-top:-.5px}
+#grid i::after{top:0;bottom:0;left:50%;width:1px;margin-left:-.5px}
+.wrap{position:relative;z-index:1}
+.comp,.blk{background:var(--paper)}
+summary::after{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+details:not([open]) summary:hover::after,details:not([open]) summary:focus-visible::after{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){#grid i,summary::after{transition:none}}
 </style>
 <noscript><style>#loader,.switch{display:none}</style></noscript>
 </head>
@@ -157,6 +174,7 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
     <div class="l-pct"><span id="pct">000</span><small>%</small></div>
   </div>
 </div>
+<div id="grid" aria-hidden="true"></div>
 <main class="wrap" id="page">
   <div class="tools">
   <button class="switch tool-story" id="st-btn" type="button" aria-expanded="false" aria-controls="story">
@@ -338,6 +356,39 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   });
   addEventListener('hashchange',fromHash);
   fromHash();
+})();
+</script>
+<script>
+(function(){
+  var g=document.getElementById('grid');
+  if(!g)return;
+  var S=56,cols=0,rows=0,cells=[],hot={},t;
+  function build(){
+    S=innerWidth<560?40:56;
+    cols=Math.ceil(innerWidth/S)+1;rows=Math.ceil(innerHeight/S)+1;
+    g.style.setProperty('--cell',S+'px');
+    var f=document.createDocumentFragment();cells=[];hot={};
+    for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
+      var i=document.createElement('i');i.style.left=c*S+'px';i.style.top=r*S+'px';
+      f.appendChild(i);cells.push(i);
+    }
+    g.textContent='';g.appendChild(f);
+  }
+  build();
+  addEventListener('resize',function(){clearTimeout(t);t=setTimeout(build,150);});
+  addEventListener('pointermove',function(e){
+    if(e.pointerType==='touch')return;
+    var x=e.clientX,y=e.clientY,c0=Math.round(x/S),r0=Math.round(y/S),R=S*.6,next={};
+    for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
+      var c=c0+dc,r=r0+dr;
+      if(c<0||r<0||c>=cols||r>=rows)continue;
+      var dx=c*S-x,dy=r*S-y;
+      if(dx*dx+dy*dy>R*R)continue;
+      var k=r*cols+c;next[k]=1;
+      if(!hot[k]){var el=cells[k];el._a=(el._a||0)+90;el.style.transform='rotate('+el._a+'deg)';}
+    }
+    hot=next;
+  },{passive:true});
 })();
 </script>
 </body>
