@@ -32,7 +32,7 @@ body{
 .wrap{
   margin:auto;width:100%;max-width:1040px;padding:32px 24px;
   display:grid;gap:40px;
-  grid-template-areas:"logo" "name" "comp" "contacts";
+  grid-template-areas:"switch" "logo" "name" "comp" "contacts";
 }
 .logo{grid-area:logo}
 .logo svg{display:block;width:min(55vw,231px);height:auto;overflow:visible;color:var(--ink);shape-rendering:geometricPrecision}
@@ -48,23 +48,34 @@ h1{
   border:2px solid var(--ink);border-radius:18px;
 }
 h2{
-  margin:0;padding:14px 22px;background:#fff;color:#000;
+  margin:0;padding:14px 22px;background:var(--band-bg,#fff);color:var(--band-ink,#000);
   border-bottom:2px solid var(--ink);
   font-size:15px;font-weight:500;letter-spacing:.04em;
 }
 details+details{border-top:1px dashed var(--ink)}
 summary{
-  display:flex;justify-content:space-between;align-items:center;gap:16px;
-  padding:16px 22px;font-size:18px;cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  width:fit-content;max-width:calc(100% - 44px);margin:16px 22px;padding:6px 10px;
+  border:1px solid var(--ink);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;list-style:none;
 }
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:22px;line-height:1}
+summary::after{content:"+";font-size:16px;line-height:1}
 details[open] summary::after{content:"\2212"}
 summary:hover,summary:focus-visible{background:var(--ink);color:var(--paper)}
-summary:focus-visible{outline:2px solid var(--paper);outline-offset:-6px}
-.sub{margin:0;padding:0 22px 16px;list-style:none}
-.sub li{padding:5px 0;font-size:16px}
-.sub li::before{content:"\2013  "}
+summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+details[open] summary{margin-bottom:0}
+.sub{margin:0;padding:14px 22px 22px;list-style:none}
+.sub li{
+  position:relative;width:fit-content;max-width:100%;margin:14px 0 14px 36px;
+  padding:4px 10px;border:1px solid var(--ink);
+  font-size:12px;letter-spacing:.08em;line-height:1.4;text-transform:uppercase;
+}
+.sub li:first-child{margin-top:0}
+.sub li:last-child{margin-bottom:0}
+.sub li::before{content:"";position:absolute;right:100%;top:50%;width:36px;border-top:1px solid var(--ink)}
+.sub li::after{content:"";position:absolute;left:-36px;top:-14px;bottom:0;border-left:1px solid var(--ink)}
+.sub li:last-child::after{bottom:auto;height:calc(50% + 14px)}
 nav{grid-area:contacts;align-self:start}
 nav a{
   display:grid;grid-template-columns:1fr;gap:2px;
@@ -83,7 +94,7 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .wrap{
     padding:48px 40px;column-gap:56px;row-gap:56px;
     grid-template-columns:minmax(0,5fr) minmax(0,7fr);
-    grid-template-areas:"logo name" "comp contacts";
+    grid-template-areas:"switch switch" "logo name" "comp contacts";
   }
   .logo{align-self:center}
   .logo svg{width:100%;max-width:420px}
@@ -111,8 +122,18 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .l-bar{flex:1;padding-bottom:12px}
 }
 @media (prefers-reduced-motion:reduce){#loader{transition:none}}
+.switch{
+  grid-area:switch;justify-self:end;display:flex;align-items:center;gap:10px;
+  padding:6px 12px 6px 8px;border:1px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);
+  font:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+}
+.switch svg{display:block;width:28px;height:20px;overflow:visible}
+.switch:hover,.switch:focus-visible{background:var(--ink);color:var(--paper)}
+.switch:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+:root{--yo:#FFAE42;--vb:#2B4A85;--sy:#FFF4E5;--sw2:var(--vb)}
+:root[data-palette="color"]{--paper:var(--vb);--ink:var(--sy);--band-bg:var(--yo);--band-ink:var(--vb);--sw2:var(--sy)}
 </style>
-<noscript><style>#loader{display:none}</style></noscript>
+<noscript><style>#loader,.switch{display:none}</style></noscript>
 </head>
 <body>
 <div id="loader" role="progressbar" aria-label="Caricamento" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -123,6 +144,10 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   </div>
 </div>
 <main class="wrap" id="page">
+  <button class="switch" id="sw" type="button" aria-pressed="false">
+    <svg viewBox="93 116 840 588" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAE42"/><stop offset="1" style="stop-color:var(--sw2)"/></linearGradient></defs></svg>
+    <span>Switch Palette</span>
+  </button>
   <header class="logo">
     <svg viewBox="93 116 840 588" role="img" aria-label="Logo di Andrea Maniero"><path d="M323.795 137.375 C346.111 137.346 367.516 146.215 383.272 162.018 C391.46 170.232 391.44 183.528 383.227 191.717 C375.013 199.905 361.717 199.885 353.528 191.672 C345.632 183.751 334.985 179.375 323.81 179.375 L197.68 179.375 C174.451 179.375 155.62 198.206 155.62 221.435 L155.62 599.815 C155.62 623.044 174.441 641.905 197.68 641.905 L449.94 641.905 C473.179 641.905 492 623.044 492 599.815 L492 557.755 L323.814 557.755 C301.518 557.759 280.134 548.904 264.364 533.139 C248.598 517.374 239.74 495.991 239.74 473.695 L239.74 347.565 C239.74 301.134 277.379 263.495 323.81 263.495 L449.94 263.495 C472.236 263.495 493.619 272.353 509.385 288.121 C525.149 303.889 534.004 325.273 534 347.565 L534 515.755 L702.19 515.755 C725.409 515.759 744.26 496.915 744.26 473.695 L744.26 347.565 C744.26 324.33 725.425 305.495 702.19 305.495 L576.06 305.495 C529.635 305.495 492 267.86 492 221.435 C492 175.01 529.635 137.375 576.06 137.375 L828.32 137.375 C874.745 137.375 912.38 175.01 912.38 221.435 L912.38 599.81 C912.389 622.103 903.534 643.503 887.774 659.27 C872.008 675.043 850.621 683.905 828.32 683.905 L702.202 683.905 C679.89 683.929 658.489 675.062 642.732 659.265 C634.541 651.054 634.558 637.758 642.77 629.567 C650.981 621.376 664.277 621.393 672.468 629.605 C680.362 637.519 691.019 641.905 702.19 641.905 L828.32 641.905 C851.559 641.905 870.38 623.044 870.38 599.815 L870.38 221.435 C870.38 198.206 851.549 179.375 828.32 179.375 L576.06 179.375 C552.831 179.375 534 198.206 534 221.435 C534 244.664 552.831 263.495 576.06 263.495 L702.19 263.495 C748.621 263.495 786.26 301.134 786.26 347.565 L786.26 473.695 C786.26 495.991 777.402 517.374 761.634 533.14 C745.866 548.904 724.482 557.759 702.19 557.755 L534 557.755 L534 599.81 C534.009 622.104 525.153 643.503 509.393 659.271 C493.628 675.043 472.241 683.905 449.94 683.905 L197.68 683.905 C175.379 683.905 153.992 675.043 138.226 659.27 C122.466 643.503 113.611 622.103 113.62 599.81 L113.62 221.435 C113.62 175.01 151.255 137.375 197.68 137.375 Z M323.81 305.495 C300.575 305.495 281.74 324.33 281.74 347.565 L281.74 473.695 C281.74 496.912 300.589 515.759 323.806 515.755 L492 515.755 L492 347.565 C492.004 324.346 473.16 305.495 449.94 305.495 Z" fill="currentColor"/></svg>
   </header>
@@ -210,6 +235,18 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   }catch(err){
     L.remove();M.inert=false;document.body.style.overflow='';
   }
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('sw'),r=document.documentElement,s=document.querySelector('.logo svg path');
+  if(!b)return;
+  if(s){var p=s.cloneNode(true);p.setAttribute('fill','url(#pg)');b.querySelector('svg').appendChild(p);}
+  b.addEventListener('click',function(){
+    var on=r.getAttribute('data-palette')==='color';
+    if(on){r.removeAttribute('data-palette');}else{r.setAttribute('data-palette','color');}
+    b.setAttribute('aria-pressed',on?'false':'true');
+  });
 })();
 </script>
 </body>
