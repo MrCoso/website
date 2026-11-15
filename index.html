@@ -132,6 +132,20 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .switch:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 :root{--yo:#FFAE42;--vb:#2B4A85;--sy:#FFF4E5;--sw2:var(--vb)}
 :root[data-palette="color"]{--paper:var(--vb);--ink:var(--sy);--band-bg:var(--yo);--band-ink:var(--vb);--sw2:var(--sy)}
+.tools{grid-area:switch;justify-self:end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}
+.tool-story[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+.story{grid-area:story;display:none}
+.wrap.is-story .story{display:block}
+.wrap.is-story .logo,.wrap.is-story .name,.wrap.is-story .comp{display:none}
+.wrap.is-story{grid-template-areas:"switch" "story" "contacts"}
+.story h2{padding:0;background:none;color:inherit;border:0;font-size:clamp(40px,11vw,72px);font-weight:700;line-height:.95;letter-spacing:-.02em}
+.blocks{display:grid;gap:28px;margin-top:32px}
+.blk{border:2px solid var(--ink);border-radius:18px;overflow:hidden}
+.blk h3{margin:0;padding:14px 22px;background:var(--band-bg,#fff);color:var(--band-ink,#000);border-bottom:2px solid var(--ink);font-size:15px;font-weight:500;letter-spacing:.04em}
+@media (min-width:820px){
+  .wrap.is-story{grid-template-areas:"switch switch" "story story" "contacts contacts"}
+  .blocks{grid-template-columns:1fr 1fr;align-items:start;gap:40px}
+}
 </style>
 <noscript><style>#loader,.switch{display:none}</style></noscript>
 </head>
@@ -144,10 +158,16 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   </div>
 </div>
 <main class="wrap" id="page">
+  <div class="tools">
+  <button class="switch tool-story" id="st-btn" type="button" aria-expanded="false" aria-controls="story">
+    <svg viewBox="0 0 28 20" aria-hidden="true"><path d="M4 4v12" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="10" r="2" fill="currentColor"/><circle cx="4" cy="16" r="2" fill="currentColor"/><path d="M10 4h16M10 10h11M10 16h16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+    <span>La mia Storia</span>
+  </button>
   <button class="switch" id="sw" type="button" aria-pressed="false">
     <svg viewBox="93 116 840 588" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAE42"/><stop offset="1" style="stop-color:var(--sw2)"/></linearGradient></defs></svg>
     <span>Switch Palette</span>
   </button>
+  </div>
   <header class="logo">
     <svg viewBox="93 116 840 588" role="img" aria-label="Logo di Andrea Maniero"><path d="M323.795 137.375 C346.111 137.346 367.516 146.215 383.272 162.018 C391.46 170.232 391.44 183.528 383.227 191.717 C375.013 199.905 361.717 199.885 353.528 191.672 C345.632 183.751 334.985 179.375 323.81 179.375 L197.68 179.375 C174.451 179.375 155.62 198.206 155.62 221.435 L155.62 599.815 C155.62 623.044 174.441 641.905 197.68 641.905 L449.94 641.905 C473.179 641.905 492 623.044 492 599.815 L492 557.755 L323.814 557.755 C301.518 557.759 280.134 548.904 264.364 533.139 C248.598 517.374 239.74 495.991 239.74 473.695 L239.74 347.565 C239.74 301.134 277.379 263.495 323.81 263.495 L449.94 263.495 C472.236 263.495 493.619 272.353 509.385 288.121 C525.149 303.889 534.004 325.273 534 347.565 L534 515.755 L702.19 515.755 C725.409 515.759 744.26 496.915 744.26 473.695 L744.26 347.565 C744.26 324.33 725.425 305.495 702.19 305.495 L576.06 305.495 C529.635 305.495 492 267.86 492 221.435 C492 175.01 529.635 137.375 576.06 137.375 L828.32 137.375 C874.745 137.375 912.38 175.01 912.38 221.435 L912.38 599.81 C912.389 622.103 903.534 643.503 887.774 659.27 C872.008 675.043 850.621 683.905 828.32 683.905 L702.202 683.905 C679.89 683.929 658.489 675.062 642.732 659.265 C634.541 651.054 634.558 637.758 642.77 629.567 C650.981 621.376 664.277 621.393 672.468 629.605 C680.362 637.519 691.019 641.905 702.19 641.905 L828.32 641.905 C851.559 641.905 870.38 623.044 870.38 599.815 L870.38 221.435 C870.38 198.206 851.549 179.375 828.32 179.375 L576.06 179.375 C552.831 179.375 534 198.206 534 221.435 C534 244.664 552.831 263.495 576.06 263.495 L702.19 263.495 C748.621 263.495 786.26 301.134 786.26 347.565 L786.26 473.695 C786.26 495.991 777.402 517.374 761.634 533.14 C745.866 548.904 724.482 557.759 702.19 557.755 L534 557.755 L534 599.81 C534.009 622.104 525.153 643.503 509.393 659.271 C493.628 675.043 472.241 683.905 449.94 683.905 L197.68 683.905 C175.379 683.905 153.992 675.043 138.226 659.27 C122.466 643.503 113.611 622.103 113.62 599.81 L113.62 221.435 C113.62 175.01 151.255 137.375 197.68 137.375 Z M323.81 305.495 C300.575 305.495 281.74 324.33 281.74 347.565 L281.74 473.695 C281.74 496.912 300.589 515.759 323.806 515.755 L492 515.755 L492 347.565 C492.004 324.346 473.16 305.495 449.94 305.495 Z" fill="currentColor"/></svg>
   </header>
@@ -186,6 +206,57 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
         <li>Tracking e motion control</li>
       </ul>
     </details>
+  </section>
+
+  <section class="story" id="story" aria-labelledby="st-title">
+    <h2 id="st-title">La mia<br>Storia</h2>
+    <div class="blocks">
+      <section class="blk" aria-labelledby="formazione">
+        <h3 id="formazione">Formazione</h3>
+        <details>
+          <summary>Istituto Tecnico Audiovisivo Bartolomeo Montagna</summary>
+          <ul class="sub">
+            <li>2014 – 2018</li>
+            <li>Vicenza</li>
+            <li>Grafica e produzione audiovisiva</li>
+            <li>Uso delle attrezzature per il videomaking</li>
+            <li>Regia e movimenti di camera</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Master in CGI · BigRock School</summary>
+          <ul class="sub">
+            <li>2019 – 2020</li>
+            <li>Roncade (TV)</li>
+            <li>Rigging, animazione, illuminazione</li>
+            <li>Texturing con Substance Painter</li>
+            <li>Compositing con After Effects e VFX</li>
+          </ul>
+        </details>
+      </section>
+      <section class="blk" aria-labelledby="esperienze">
+        <h3 id="esperienze">Esperienze lavorative</h3>
+        <details>
+          <summary>3D Generalist · Freelance</summary>
+          <ul class="sub">
+            <li>02/2020 – 09/2021</li>
+            <li>Vicenza</li>
+            <li>Modellazione 3D per prototipazione e stampa 3D</li>
+            <li>Rendering di spot commerciali per la pubblicità di prodotto, tra cui Keyland</li>
+          </ul>
+        </details>
+        <details>
+          <summary>3D Generalist · Buona Visione</summary>
+          <ul class="sub">
+            <li>11/2021 – oggi</li>
+            <li>Padova</li>
+            <li>Ambienti virtuali da zero in Unreal Engine per livestreaming e virtual production</li>
+            <li>Calibrazione di sistemi di motion tracking (FreeD / LiveLink) con pipeline real-time</li>
+            <li>Composizione e post-produzione di elementi 3D su riprese live, con registi e troupe</li>
+          </ul>
+        </details>
+      </section>
+    </div>
   </section>
 
   <nav aria-label="Contatti">
@@ -247,6 +318,26 @@ nav a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
     if(on){r.removeAttribute('data-palette');}else{r.setAttribute('data-palette','color');}
     b.setAttribute('aria-pressed',on?'false':'true');
   });
+})();
+</script>
+<script>
+(function(){
+  var w=document.getElementById('page'),b=document.getElementById('st-btn');
+  if(!w||!b)return;
+  var lab=b.querySelector('span');
+  function set(on){
+    w.classList.toggle('is-story',on);
+    b.setAttribute('aria-expanded',on?'true':'false');
+    lab.textContent=on?'← Home':'La mia Storia';
+  }
+  function fromHash(){set(location.hash==='#storia');}
+  b.addEventListener('click',function(){
+    var on=!w.classList.contains('is-story');
+    set(on);
+    try{location.hash=on?'storia':'home';}catch(e){}
+  });
+  addEventListener('hashchange',fromHash);
+  fromHash();
 })();
 </script>
 </body>
